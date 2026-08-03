@@ -1,0 +1,3 @@
+Approach,Vectorization,Model,F1-score
+Classic NLP,TF-IDF,Logistic Regression,0.774938
+Transformer,DistilBERT tokenizer,DistilBERT,0.813990
