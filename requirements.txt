@@ -1,0 +1,13 @@
+pandas
+numpy
+scikit-learn
+matplotlib
+seaborn
+nltk
+gensim
+torch
+transformers
+datasets
+accelerate
+evaluate
+pyyaml
