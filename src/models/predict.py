@@ -65,6 +65,9 @@ tokenizer = AutoTokenizer.from_pretrained(
     MODEL_PATH
 )
 
+data_collator = DataCollatorWithPadding(
+    tokenizer=tokenizer
+)
 
 # ==========================================
 # 4. Convert test data to Dataset
@@ -115,9 +118,10 @@ model = AutoModelForSequenceClassification.from_pretrained(
 # ==========================================
 
 trainer = Trainer(
-    model=model
+    model=model,
+    args=training_args,
+    data_collator=data_collator
 )
-
 
 # ==========================================
 # 8. Make predictions
