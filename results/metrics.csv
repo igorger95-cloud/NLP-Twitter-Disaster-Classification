@@ -1,3 +1,6 @@
 Approach,Vectorization,Model,F1-score
-Classic NLP,TF-IDF,Logistic Regression,0.774938
-Transformer,DistilBERT tokenizer,DistilBERT,0.813990
+Classic NLP,TF-IDF,Logistic Regression + Stemming,0.774938
+Classic NLP,Word2Vec,Gradient Boosting,0.632997
+Classic NLP,Word2Vec,Logistic Regression,0.593070
+Transformer embeddings,Sentence Transformer,Logistic Regression,0.800635
+Fine-tuned Transformer,DistilBERT,DistilBERT,0.813990
