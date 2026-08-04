@@ -33,14 +33,23 @@ sys.path.append(str(PROJECT_ROOT))
 # ==========================================
 # Configuration
 # ==========================================
+from src.utils.config import load_config
 
-MODEL_NAME = "distilbert-base-uncased"
 
-MAX_LENGTH = 128
-LEARNING_RATE = 2e-5
-BATCH_SIZE = 16
-EPOCHS = 3
-WEIGHT_DECAY = 0.01
+CONFIG_PATH = PROJECT_ROOT / "configs" / "distilbert_config.yaml"
+
+config = load_config(CONFIG_PATH)
+
+MODEL_NAME = config["model"]["name"]
+MAX_LENGTH = config["tokenization"]["max_length"]
+
+LEARNING_RATE = config["training"]["learning_rate"]
+BATCH_SIZE = config["training"]["batch_size"]
+EPOCHS = config["training"]["epochs"]
+WEIGHT_DECAY = config["training"]["weight_decay"]
+
+TEST_SIZE = config["split"]["test_size"]
+RANDOM_STATE = config["split"]["random_state"]
 
 
 # ==========================================
