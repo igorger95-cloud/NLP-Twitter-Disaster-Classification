@@ -24,17 +24,14 @@ from transformers import (
 
 # ==========================================
 # Project root
-# ==========================================
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 sys.path.append(str(PROJECT_ROOT))
 
 
-# ==========================================
-# Configuration
-# ==========================================
-from src.utils.config import load_config
+# Load configuration
 
+from src.utils.config import load_config
 
 CONFIG_PATH = PROJECT_ROOT / "configs" / "distilbert_config.yaml"
 
@@ -50,8 +47,6 @@ WEIGHT_DECAY = config["training"]["weight_decay"]
 
 TEST_SIZE = config["split"]["test_size"]
 RANDOM_STATE = config["split"]["random_state"]
-
-
 # ==========================================
 # 1. Load data
 # ==========================================
@@ -79,8 +74,8 @@ train["text_clean"] = (
 
 train_df, val_df = train_test_split(
     train[["text_clean", "target"]],
-    test_size=0.2,
-    random_state=42,
+    test_size=TEST_SIZE,
+    random_state=RANDOM_STATE,
     stratify=train["target"]
 )
 
@@ -169,7 +164,7 @@ data_collator = DataCollatorWithPadding(
 
 model = AutoModelForSequenceClassification.from_pretrained(
     MODEL_NAME,
-    num_labels=2
+    num_labels=config["model"]["num_labels"]
 )
 
 
@@ -239,7 +234,7 @@ training_args = TrainingArguments(
 
     greater_is_better=True,
 
-    fp16=True,
+    fp16=config["training"]["fp16"],
 
     logging_dir=str(
         PROJECT_ROOT / "models" / "distilbert" / "logs"
