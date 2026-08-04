@@ -7,7 +7,8 @@ from datasets import Dataset
 from transformers import (
     AutoTokenizer,
     AutoModelForSequenceClassification,
-    Trainer
+    Trainer,
+    DataCollatorWithPadding
 )
 
 
