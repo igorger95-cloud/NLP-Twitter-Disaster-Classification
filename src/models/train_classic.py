@@ -66,16 +66,21 @@ X_train_text, X_val_text, y_train, y_val = train_test_split(
     stratify=y
 )
 
-
 # =========================
 # 4. TF-IDF
 # =========================
 
+from src.utils.config import load_config
+
+CONFIG_PATH = PROJECT_ROOT / "configs" / "classic_config.yaml"
+
+config = load_config(CONFIG_PATH)
+
 X_train, X_val, vectorizer = create_tfidf_features(
     X_train_text,
     X_val_text,
-    max_features=5000,
-    ngram_range=(1, 2)
+    max_features=config["tfidf"]["max_features"],
+    ngram_range=tuple(config["tfidf"]["ngram_range"])
 )
 
 
@@ -84,8 +89,8 @@ X_train, X_val, vectorizer = create_tfidf_features(
 # =========================
 
 logistic_model = LogisticRegression(
-    C=1,
-    max_iter=1000,
+    C=config["logistic_regression"]["C"],
+    max_iter=config["logistic_regression"]["max_iter"],
     random_state=42
 )
 
@@ -107,7 +112,7 @@ print(logistic_metrics)
 # =========================
 
 gradient_model = GradientBoostingClassifier(
-    n_estimators=100,
+    n_estimators=config["gradient_boosting"]["n_estimators"],
     random_state=42
 )
 
