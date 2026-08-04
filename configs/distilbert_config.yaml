@@ -1,13 +1,17 @@
-model_name: distilbert-base-uncased
+model:
+  name: distilbert-base-uncased
+  num_labels: 2
 
-max_length: 128
+tokenization:
+  max_length: 128
 
-learning_rate: 0.00002
+training:
+  learning_rate: 0.00002
+  batch_size: 16
+  epochs: 3
+  weight_decay: 0.01
+  fp16: true
 
-batch_size: 16
-
-epochs: 3
-
-weight_decay: 0.01
-
-fp16: true
+split:
+  test_size: 0.2
+  random_state: 42
