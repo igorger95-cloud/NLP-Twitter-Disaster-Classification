@@ -5,4 +5,8 @@ tfidf:
     - 2
 
 logistic_regression:
-  C: 1
+  C: 1.0
+  max_iter: 1000
+
+gradient_boosting:
+  n_estimators: 100
