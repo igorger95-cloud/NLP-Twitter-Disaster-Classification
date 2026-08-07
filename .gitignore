@@ -1,0 +1,19 @@
+# Data
+data/*.csv
+*.zip
+
+# Trained models
+models/
+
+# Results
+results/submission.csv
+
+# Python
+__pycache__/
+*.pyc
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Environment
+.env
