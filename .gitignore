@@ -5,6 +5,9 @@ data/*.csv
 # Trained models
 models/
 
+# Temporary training files
+tmp_trainer/
+
 # Results
 results/submission.csv
 
