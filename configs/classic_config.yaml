@@ -10,3 +10,10 @@ logistic_regression:
 
 gradient_boosting:
   n_estimators: 100
+
+word2vec:
+  vector_size: 100
+  window: 5
+  min_count: 1
+  workers: 4
+  epochs: 10
