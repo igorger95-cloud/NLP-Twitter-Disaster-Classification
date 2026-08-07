@@ -216,7 +216,7 @@ results = pd.DataFrame([
     }
 ])
 
-RESULTS_PATH = PROJECT_ROOT / "results" / "metrics.csv"
+RESULTS_PATH = PROJECT_ROOT / "results" / "classic_metrics.csv"
 
 results.to_csv(
     RESULTS_PATH,
