@@ -8,8 +8,8 @@
 
 Целевая переменная:
 
-- `0` — не связано с реальным происшествием
-- `1` — связано с реальным происшествием
+* `0` — не связано с реальным происшествием
+* `1` — связано с реальным происшествием
 
 В проекте сравниваются классические методы обработки текста, Transformer embeddings и fine-tuning предобученной Transformer-модели.
 
@@ -23,9 +23,9 @@
 
 Основные файлы:
 
-- `train.csv`
-- `test.csv`
-- `sample_submission.csv`
+* `train.csv`
+* `test.csv`
+* `sample_submission.csv`
 
 В репозитории исходные данные не хранятся.
 
@@ -36,11 +36,15 @@ data/
 ├── train.csv
 ├── test.csv
 └── sample_submission.csv
+```
 
-2. Project Pipeline
+---
+
+# 2. Project Pipeline
 
 Общий pipeline проекта:
 
+```text
 Dataset
    ↓
 EDA
@@ -60,69 +64,95 @@ Evaluation
 Prediction
    ↓
 submission.csv
-3. Exploratory Data Analysis
+```
+
+---
+
+# 3. Exploratory Data Analysis
 
 EDA выполнен отдельно в Jupyter Notebook:
 
+```text
 notebooks/EDA.ipynb
+```
 
 В рамках EDA были исследованы:
 
-размеры train и test;
-распределение целевой переменной;
-пропущенные значения;
-дубликаты;
-длина текстов;
-распределение классов;
-особенности текстовых данных.
-4. Text preprocessing
+* размеры train и test;
+* распределение целевой переменной;
+* пропущенные значения;
+* дубликаты;
+* длина текстов;
+* распределение классов;
+* особенности текстовых данных.
+
+---
+
+# 4. Text Preprocessing
 
 Для классических моделей были протестированы разные варианты обработки текста:
 
-очистка текста;
-удаление stop words;
-stemming;
-lemmatization;
-различные варианты очистки.
+* очистка текста;
+* удаление stop words;
+* stemming;
+* lemmatization;
+* различные варианты очистки.
 
 Лучший вариант для классического подхода:
 
-stemming
+**stemming**
 
 Для Transformer использовалась только минимальная обработка:
 
-заполнение NaN;
-преобразование текста в строковый тип;
-удаление лишних пробелов.
+* заполнение NaN;
+* преобразование текста в строковый тип;
+* удаление лишних пробелов.
 
 Stemming, lemmatization и удаление stop words для Transformer не использовались.
 
 Это позволяет сохранить естественный контекст текста.
 
-5. Classic NLP
+---
 
-Были протестированы следующие подходы:
+# 5. Classic NLP
 
-TF-IDF
+Были протестированы следующие подходы.
+
+## TF-IDF
 
 TF-IDF преобразует текст в числовой вектор на основе важности слов в документах.
 
-Использовалась:
+Использовалась комбинация:
 
-TF-IDF + Logistic Regression
+**TF-IDF + Logistic Regression**
 
 Результат:
 
-F1 = 0.774938
-Word2Vec
+**F1 = 0.774938**
+
+## Word2Vec
 
 Word2Vec создаёт плотные векторные представления слов.
 
-На его основе были протестированы:
+На его основе были протестированы две модели:
 
-Word2Vec + Logistic Regression
-Word2Vec + Gradient Boosting
-6. Transformer embeddings
+**Word2Vec + Logistic Regression**
+
+F1 = **0.593070**
+
+**Word2Vec + Gradient Boosting**
+
+F1 = **0.632997**
+
+Таким образом, среди классических подходов лучшим оказался:
+
+**TF-IDF + Logistic Regression + Stemming**
+
+F1 = **0.774938**
+
+---
+
+# 6. Transformer Embeddings
 
 Также был протестирован подход с использованием Sentence Transformer embeddings.
 
@@ -130,37 +160,44 @@ Word2Vec + Gradient Boosting
 
 Результат:
 
-Sentence Transformer + Logistic Regression
-F1 = 0.800635
+**Sentence Transformer + Logistic Regression**
+
+F1 = **0.800635**
 
 Этот результат оказался выше классического TF-IDF подхода.
 
-7. Fine-tuning Transformer
+---
+
+# 7. Fine-tuning Transformer
 
 Для fine-tuning была выбрана модель:
 
-distilbert-base-uncased
-Почему DistilBERT
+**distilbert-base-uncased**
+
+## Почему DistilBERT
 
 DistilBERT выбран потому что:
 
-работает с английским языком;
-является облегчённой версией BERT;
-требует меньше памяти;
-быстрее обучается;
-хорошо подходит для коротких текстов;
-подходит для обучения на Google Colab GPU T4.
-8. Transformer preprocessing
+* работает с английским языком;
+* является облегчённой версией BERT;
+* требует меньше памяти;
+* быстрее обучается;
+* хорошо подходит для коротких текстов;
+* подходит для обучения на Google Colab GPU T4.
+
+---
+
+# 8. Transformer Preprocessing
 
 В отличие от Classic NLP, текст перед Transformer не очищался агрессивно.
 
 Не использовались:
 
-stemming;
-lemmatization;
-удаление stop words;
-удаление пунктуации;
-TF-IDF.
+* stemming;
+* lemmatization;
+* удаление stop words;
+* удаление пунктуации;
+* TF-IDF.
 
 Использовалась только минимальная обработка текста.
 
@@ -168,69 +205,90 @@ TF-IDF.
 
 Параметры токенизации:
 
+```text
 max_length = 128
 truncation = True
-9. Fine-tuning parameters
+```
+
+---
+
+# 9. Fine-tuning Parameters
 
 Использовались следующие параметры:
 
-Model: distilbert-base-uncased
-
-Learning rate: 2e-5
-Batch size: 16
-Epochs: 3
-Weight decay: 0.01
-Max length: 128
-FP16: True
+| Parameter     | Value                     |
+| ------------- | ------------------------- |
+| Model         | `distilbert-base-uncased` |
+| Learning rate | `2e-5`                    |
+| Batch size    | `16`                      |
+| Epochs        | `3`                       |
+| Weight decay  | `0.01`                    |
+| Max length    | `128`                     |
+| FP16          | `True`                    |
 
 Обучение выполнялось на GPU Google Colab T4.
 
-10. Evaluation
+---
+
+# 10. Evaluation
 
 Основной метрикой проекта является:
 
-F1-score
+**F1-score**
 
 Дополнительно рассчитывались:
 
-Accuracy;
-Precision;
-Recall.
+* Accuracy;
+* Precision;
+* Recall.
 
-| Подход                 | Векторизация         | Модель                         |     F1-score |
+---
+
+# 11. Results
+
+| Approach               | Vectorization        | Model                          |     F1-score |
 | ---------------------- | -------------------- | ------------------------------ | -----------: |
 | Classic NLP            | TF-IDF               | Logistic Regression + Stemming |     0.774938 |
 | Classic NLP            | Word2Vec             | Gradient Boosting              |     0.632997 |
 | Classic NLP            | Word2Vec             | Logistic Regression            |     0.593070 |
 | Transformer embeddings | Sentence Transformer | Logistic Regression            |     0.800635 |
-| Fine-tuned Transformer | DistilBERT           | DistilBERT                     | **0.813990** |
+| Fine-tuned Transformer | DistilBERT           | Fine-tuned DistilBERT          | **0.813990** |
 
+Результаты также сохранены в:
 
-12. Best model
+```text
+results/metrics.csv
+```
+
+---
+
+# 12. Best Model
 
 Лучший результат показала модель:
 
-Fine-tuned DistilBERT
+**Fine-tuned DistilBERT**
 
 F1-score:
 
-0.813990
+**0.813990**
 
 Она превзошла:
 
-TF-IDF + Logistic Regression:
-0.774938
-
-Sentence Transformer + Logistic Regression:
-0.800635
+* TF-IDF + Logistic Regression — **0.774938**
+* Sentence Transformer + Logistic Regression — **0.800635**
 
 Таким образом, fine-tuning позволил получить лучший результат среди протестированных подходов.
 
-13. Repository structure
+---
+
+# 13. Repository Structure
+
+```text
 NLP-Twitter-Disaster-Classification/
 │
 ├── README.md
 ├── requirements.txt
+├── .gitignore
 │
 ├── configs/
 │   ├── classic_config.yaml
@@ -243,7 +301,8 @@ NLP-Twitter-Disaster-Classification/
 │   └── EDA.ipynb
 │
 ├── results/
-│   └── metrics.csv
+│   ├── metrics.csv
+│   └── submission.csv
 │
 └── src/
     │
@@ -265,98 +324,140 @@ NLP-Twitter-Disaster-Classification/
     │
     └── utils/
         └── config.py
-14. Configuration
+```
+
+---
+
+# 14. Configuration
 
 Параметры моделей вынесены в YAML-конфиги:
 
+```text
 configs/classic_config.yaml
 configs/distilbert_config.yaml
+```
 
 Это позволяет изменять параметры экспериментов без изменения основного Python-кода.
 
-15. Installation
+---
+
+# 15. Installation
 
 Клонировать репозиторий:
 
+```bash
 git clone https://github.com/USERNAME/NLP-Twitter-Disaster-Classification.git
 cd NLP-Twitter-Disaster-Classification
+```
 
 Установить зависимости:
 
+```bash
 pip install -r requirements.txt
-16. Running Classic NLP
+```
 
-После размещения данных в папке data/:
+---
 
+# 16. Running Classic NLP
+
+После размещения данных в папке `data/`:
+
+```bash
 python src/models/train_classic.py
+```
 
-Результаты сохраняются в:
+Результаты экспериментов сохраняются в:
 
-results/classic_metrics.csv
-17. Running Transformer
+```text
+results/metrics.csv
+```
+
+---
+
+# 17. Running Transformer
 
 Для fine-tuning DistilBERT:
 
+```bash
 python src/models/train_transformer.py
+```
 
 Обученная модель сохраняется в:
 
+```text
 models/distilbert/
-18. Creating predictions
+```
+
+---
+
+# 18. Creating Predictions
 
 После обучения модели:
 
+```bash
 python src/models/predict.py
+```
 
 Будет создан файл:
 
+```text
 results/submission.csv
+```
 
 Формат:
 
+```text
 id,target
 0,1
 1,0
 2,1
 ...
+```
 
 Этот файл можно загрузить на Kaggle для получения итогового leaderboard score.
 
-19. How to improve the results
+---
+
+# 19. How to Improve the Results
 
 Результат можно улучшить несколькими способами.
 
-Для Classic NLP
+## Для Classic NLP
 
 Можно попробовать:
 
-подобрать параметры TF-IDF;
-изменить ngram_range;
-увеличить max_features;
-подобрать C для Logistic Regression;
-использовать более продвинутые модели.
-Для Transformer
+* подобрать параметры TF-IDF;
+* изменить `ngram_range`;
+* увеличить `max_features`;
+* подобрать `C` для Logistic Regression;
+* использовать более продвинутые модели.
+
+## Для Transformer
 
 Можно попробовать:
 
-увеличить количество эпох;
-подобрать learning rate;
-изменить batch size;
-подобрать max_length;
-использовать другую предобученную модель;
-провести hyperparameter search;
-использовать class weights;
-применить data augmentation.
+* увеличить количество эпох;
+* подобрать learning rate;
+* изменить batch size;
+* подобрать max_length;
+* использовать другую предобученную модель;
+* провести hyperparameter search;
+* использовать class weights;
+* применить data augmentation.
 
 Также можно протестировать более современные Transformer-модели, например RoBERTa или DeBERTa.
 
-20. Conclusion
+---
+
+# 20. Conclusion
 
 В проекте были сравнены классические методы NLP, Transformer embeddings и fine-tuning предобученной Transformer-модели.
 
 Наилучший результат показал:
 
-Fine-tuned DistilBERT
-F1 = 0.813990
+**Fine-tuned DistilBERT**
+
+F1 = **0.813990**
 
 Таким образом, использование контекстных представлений и fine-tuning Transformer позволило получить лучший результат по сравнению с классическими методами NLP.
+
