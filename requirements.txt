@@ -11,3 +11,4 @@ datasets
 accelerate
 evaluate
 pyyaml
+sentence-transformers

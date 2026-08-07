@@ -3,7 +3,7 @@ data/*.csv
 *.zip
 
 # Trained models
-models/
+/models/
 
 # Temporary training files
 tmp_trainer/
